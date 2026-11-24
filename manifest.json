@@ -1,0 +1,100 @@
+{
+  "manifest_version": 3,
+  "name": "PrivacyShield",
+  "version": "1.0.0",
+  "description": "Local behavior tracking, fingerprint blocking, and personalization — 100% private, zero server.",
+
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "webNavigation",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback"
+  ],
+
+  "host_permissions": ["<all_urls>"],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["fingerprint_alert.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "storage/storage.js",
+        "tracker/tracker.js",
+        "fingerprint/fingerprint.js",
+        "analytics/analytics.js",
+        "model/model.js",
+        "personalizer/personalizer.js",
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "32":  "icons/icon32.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "block_trackers",
+        "enabled": true,
+        "path": "rules/block_trackers.json"
+      }
+    ]
+  },
+
+ "web_accessible_resources": [
+  {
+    "resources": [
+      "injected.js",
+      "background.js",
+      "content.js",
+      "fingerprint_alert.js",
+      "tracker/tracker.js",
+      "storage/storage.js",
+      "fingerprint/fingerprint.js",
+      "analytics/analytics.js",
+      "model/model.js",
+      "personalizer/personalizer.js",
+      "popup/popup.html",
+      "popup/popup.js",
+      "popup/popup.css",
+      "dashboard/dashboard.html",
+      "dashboard/dashboard.js",
+      "dashboard/dashboard.css"
+    ],
+    "matches": ["<all_urls>"]
+  }
+],
+
+  "icons": {
+    "16":  "icons/icon16.png",
+    "32":  "icons/icon32.png",
+    "48":  "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

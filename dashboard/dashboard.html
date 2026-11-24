@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrivacyShield Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="dash-header">
+    <div class="header-brand">
+      <div class="brand-logo">PS</div>
+      <div class="brand-text">
+        <div class="title">PrivacyShield</div>
+        <div class="subtitle">Your Privacy Intelligence Dashboard</div>
+      </div>
+    </div>
+
+    <div class="hero-score">
+      <div class="score-ring-lg">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+          <circle id="heroScoreFill" cx="50" cy="50" r="42" fill="none"
+            stroke="#6c63ff" stroke-width="8" stroke-linecap="round"
+            stroke-dasharray="264" stroke-dashoffset="264"
+            style="transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-big" id="heroScoreNum">--</div>
+          <div class="score-lbl">PRIVACY</div>
+        </div>
+      </div>
+      <div class="score-info">
+        <div class="score-title" id="scoreTitle">Calculating...</div>
+        <div class="score-desc" id="scoreDesc">Browse more sites to build your privacy profile</div>
+      </div>
+    </div>
+
+    <div class="period-tabs">
+      <button class="period-tab active" data-period="today">Today</button>
+      <button class="period-tab" data-period="week">Week</button>
+      <button class="period-tab" data-period="month">Month</button>
+      <button class="period-tab" data-period="all">All Time</button>
+    </div>
+  </header>
+
+  <!-- SUMMARY STATS -->
+  <div class="grid-3" style="margin-top: 32px;">
+    <div class="card">
+      <div class="card-title">Trackers Blocked</div>
+      <div class="stat-big green" id="statTotalBlocked">0</div>
+      <div class="stat-desc">Fingerprinting attempts stopped</div>
+      <div class="stat-trend up" id="trendBlocked">Protecting you</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Sites Visited</div>
+      <div class="stat-big purple" id="statSitesVisited">0</div>
+      <div class="stat-desc">Websites monitored for threats</div>
+      <div class="stat-trend neutral" id="trendSites">This period</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Time Online</div>
+      <div class="stat-big" id="statTimeOnline">0m</div>
+      <div class="stat-desc">Total browsing time tracked</div>
+      <div class="stat-trend neutral">100% private</div>
+    </div>
+  </div>
+
+  <!-- SITE ANALYTICS -->
+  <div class="section-heading">Site Analytics</div>
+  <div class="card" style="overflow-x: auto; padding: 0;">
+    <table class="site-table" id="siteTable">
+      <thead>
+        <tr>
+          <th data-sort="site">Site <span class="sort-arrow">↕</span></th>
+          <th data-sort="time">Time Spent <span class="sort-arrow">↕</span></th>
+          <th data-sort="visits">Visits <span class="sort-arrow">↕</span></th>
+          <th data-sort="score">Privacy Score <span class="sort-arrow">↕</span></th>
+          <th data-sort="blocked">Blocked <span class="sort-arrow">↕</span></th>
+        </tr>
+      </thead>
+      <tbody id="siteTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- INTERESTS + PRIVACY REPORT -->
+  <div class="grid-2">
+    <div>
+      <div class="section-heading">Your Interests</div>
+      <div class="card">
+        <div class="donut-wrap">
+          <div class="donut-canvas-wrap">
+            <canvas id="donutChart" width="180" height="180"></canvas>
+            <div class="donut-center">
+              <div class="donut-center-num" id="donutCenterNum">--</div>
+              <div class="donut-center-lbl">Categories</div>
+            </div>
+          </div>
+          <div class="legend" id="donutLegend"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-heading">Tracking Attempts</div>
+      <div class="card">
+        <ul class="blocking-list" id="blockingList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROL CENTER -->
+  <div class="section-heading">Control Center</div>
+  <div class="card">
+    <div class="controls-flex">
+      <div class="ctrl-card" id="btnDeleteSite">
+        <div class="ctrl-card-icon-txt">S</div>
+        <div class="ctrl-card-title">Delete Site Data</div>
+        <div class="ctrl-card-desc">Remove data for a specific website</div>
+      </div>
+      <div class="ctrl-card" id="btnDeletePref">
+        <div class="ctrl-card-icon-txt">P</div>
+        <div class="ctrl-card-title">Delete Preference</div>
+        <div class="ctrl-card-desc">Remove one interest category</div>
+      </div>
+      <div class="ctrl-card danger" id="btnReset">
+        <div class="ctrl-card-icon-txt">R</div>
+        <div class="ctrl-card-title">Reset Everything</div>
+        <div class="ctrl-card-desc">Wipe all stored data completely</div>
+      </div>
+      <div class="ctrl-card" id="btnExport">
+        <div class="ctrl-card-icon-txt">E</div>
+        <div class="ctrl-card-title">Export Data</div>
+        <div class="ctrl-card-desc">Download all your local data as JSON</div>
+      </div>
+      <div class="ctrl-card" id="btnImport">
+        <div class="ctrl-card-icon-txt">I</div>
+        <div class="ctrl-card-title">Import Data</div>
+        <div class="ctrl-card-desc">Restore from a previous export</div>
+      </div>
+    </div>
+    <input type="file" id="importFile" accept=".json" style="display:none">
+  </div>
+
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="resetModal">
+  <div class="modal">
+    <div class="modal-icon-txt">!</div>
+    <div class="modal-title">Reset Everything?</div>
+    <div class="modal-desc">
+      This permanently deletes all preferences, site data, and privacy logs.<br>
+      <strong>This cannot be undone.</strong>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-danger" id="btnConfirmReset">Yes, Reset All</button>
+      <button class="btn btn-ghost" data-close="resetModal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="deleteSiteModal">
+  <div class="modal">
+    <div class="modal-icon-txt">S</div>
+    <div class="modal-title">Delete Site Data</div>
+    <div class="modal-desc">Select a site to remove its tracked data.</div>
+    <select id="deleteSiteSelect" class="modal-select">
+      <option value="">Select site</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn btn-danger" id="btnConfirmDeleteSite">Delete</button>
+      <button class="btn btn-ghost" data-close="deleteSiteModal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="deletePrefModal">
+  <div class="modal">
+    <div class="modal-icon-txt">P</div>
+    <div class="modal-title">Delete Preference</div>
+    <div class="modal-desc">Select a category to remove from your interest profile.</div>
+    <select id="deletePrefSelect" class="modal-select">
+      <option value="">Select category</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn btn-danger" id="btnConfirmDeletePref">Delete</button>
+      <button class="btn btn-ghost" data-close="deletePrefModal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

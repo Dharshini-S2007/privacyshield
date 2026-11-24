@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrivacyShield</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+<div class="popup-wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">PS</div>
+      <div class="brand-name">PrivacyShield</div>
+    </div>
+    <div class="toggle-wrap">
+      <span class="toggle-label" id="toggleLabel">ON</span>
+      <label class="toggle">
+        <input type="checkbox" id="mainToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Paused Banner -->
+  <div class="paused-banner" id="pausedBanner">
+    Tracking paused — your preferences are preserved
+  </div>
+
+  <!-- CURRENT SITE -->
+  <div class="section">
+    <div class="section-title">Current Site</div>
+    <div class="site-info">
+      <div class="site-name-wrap">
+        <div class="site-name" id="siteName">Loading...</div>
+        <div class="site-status" id="siteStatus">Analyzing...</div>
+        <div class="blocked-badge">
+          <span class="shield-icon">+</span>
+          <span id="siteBlocked">0</span> trackers blocked
+        </div>
+      </div>
+      <div class="score-ring-wrap">
+        <svg class="score-ring" viewBox="0 0 64 64">
+          <circle class="score-bg" cx="32" cy="32" r="25"/>
+          <circle class="score-fill" id="scoreFill" cx="32" cy="32" r="25"/>
+        </svg>
+        <div class="score-text">
+          <span class="score-num" id="scoreNum">--</span>
+          <span class="score-label">SCORE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREFERENCES -->
+  <div class="section">
+    <div class="section-title">
+      Your Interests
+      <span id="confidenceTag" style="color:#9999cc;font-weight:400;text-transform:none;letter-spacing:0;font-size:9px;margin-left:4px"></span>
+    </div>
+    <div id="prefsContainer">
+      <div class="new-user-msg" id="newUserMsg">
+        <span class="brain-icon">AI</span>
+        Browse a few pages and we will start<br>learning your preferences locally.
+      </div>
+      <div id="prefBars"></div>
+    </div>
+  </div>
+
+  <!-- USER CONTROLS -->
+  <div class="section">
+    <div class="section-title">Your Controls</div>
+    <div class="controls-grid">
+      <button class="ctrl-btn" id="btnDelete">Delete Pref</button>
+      <button class="ctrl-btn danger" id="btnReset">Reset All</button>
+      <button class="ctrl-btn" id="btnPause">Pause</button>
+      <button class="ctrl-btn success" id="btnExport">Export Data</button>
+    </div>
+
+    <!-- Delete specific preference -->
+    <div class="delete-wrap" id="deleteWrap">
+      <select class="ctrl-select" id="deleteSelect">
+        <option value="">Select category</option>
+      </select>
+      <div class="confirm-row">
+        <button class="btn-sm btn-confirm" id="btnConfirmDelete">Delete</button>
+        <button class="btn-sm btn-cancel" id="btnCancelDelete">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK STATS -->
+  <div class="section">
+    <div class="section-title">Today's Stats</div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="statBlocked">0</div>
+        <div class="stat-lbl">Blocked</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statSites">0</div>
+        <div class="stat-lbl">Sites</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statPrivacy">--</div>
+        <div class="stat-lbl">Privacy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="section">
+    <div class="nav-row">
+      <button class="nav-btn primary" id="btnDashboard">Full Dashboard</button>
+      <button class="nav-btn" id="btnSettings">Settings</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Reset Modal -->
+<div class="modal-overlay" id="resetModal">
+  <div class="modal">
+    <div class="modal-icon">!</div>
+    <div class="modal-title">Reset Everything?</div>
+    <div class="modal-desc">
+      This will delete all your preferences and browsing patterns.<br>
+      <strong>This cannot be undone.</strong>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-sm btn-confirm" id="btnConfirmReset">Yes, Reset</button>
+      <button class="btn-sm btn-cancel" id="btnCancelReset">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="popup.js"></script>
+</body>
+</html>
